@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Story Teller Photography — Wedding, Pre-Wedding & Event Photography</title>
+<meta name="description" content="Story Teller Photography — pre-wedding, wedding, birthday & anniversary shoots. We tell your story, one frame at a time.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,500&family=Work+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#2b1f24;
+    --paper:#ffffff;
+    --paper-dim:#fdf0f5;
+    --brass:#d6396f;
+    --wine:#a83258;
+    --grey:#8a7580;
+    --line: rgba(43,31,36,0.12);
+    --paper-line: rgba(255,255,255,0.18);
+    --radius: 6px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Work Sans', sans-serif;
+    font-weight:400;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.serif{ font-family:'Fraunces', serif; }
+  .mono{ font-family:'IBM Plex Mono', monospace; letter-spacing:0.04em; }
+  a{ color:inherit; text-decoration:none; }
+  img{ max-width:100%; display:block; }
+  ::selection{ background:var(--brass); color:var(--paper); }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; scroll-behavior:auto !important; }
+  }
+
+  .wrap{ max-width:1180px; margin:0 auto; padding:0 32px; }
+  @media (max-width:640px){ .wrap{ padding:0 20px; } }
+
+  /* ---------- Frame progress rail ---------- */
+  #frame-rail{
+    position:fixed; top:0; left:0; height:3px; width:0%;
+    background:var(--brass); z-index:999; transition:width .1s linear;
+  }
+
+  /* ---------- Nav ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:900;
+    background:rgba(255,255,255,0.9); backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  nav.wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    height:76px;
+  }
+  .brand{ display:flex; align-items:center; gap:10px; }
+  .brand .mark{
+    width:34px; height:34px; border:1.5px solid var(--ink); border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces',serif; font-weight:600; font-size:15px;
+  }
+  .brand .name{ font-family:'Fraunces', serif; font-weight:600; font-size:19px; letter-spacing:0.01em; }
+  .brand .name span{ color:var(--brass); }
+  .nav-links{ display:flex; gap:34px; align-items:center; }
+  .nav-links a{ font-size:13.5px; text-transform:uppercase; letter-spacing:0.09em; color:var(--ink); position:relative; padding:4px 0; }
+  .nav-links a::after{
+    content:""; position:absolute; left:0; bottom:0; height:1px; width:0%;
+    background:var(--brass); transition:width .25s ease;
+  }
+  .nav-links a:hover::after{ width:100%; }
+  .social-icon{ display:flex; color:var(--ink); transition:color .2s ease; }
+  .social-icon:hover{ color:var(--brass); }
+  .frame-count{ font-size:11.5px; color:var(--grey); }
+  .nav-cta{
+    background:var(--ink); color:var(--paper); padding:10px 20px;
+    font-size:13px; text-transform:uppercase; letter-spacing:0.08em;
+    border-radius:var(--radius);
+  }
+  .burger{ display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; }
+  .burger span{ width:24px; height:1.5px; background:var(--ink); display:block; }
+  @media (max-width:900px){
+    .nav-links{ display:none; }
+    .burger{ display:flex; }
+  }
+  #mobile-menu{
+    display:none; position:fixed; inset:76px 0 0 0; background:var(--paper); z-index:890;
+    flex-direction:column; padding:40px 28px; gap:26px; border-top:1px solid var(--line);
+  }
+  #mobile-menu.open{ display:flex; }
+  #mobile-menu a{ font-family:'Fraunces',serif; font-size:26px; }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    min-height:100vh; display:flex; flex-direction:column; justify-content:center;
+    position:relative; padding-top:76px; overflow:hidden;
+  }
+  .filmstrip{
+    position:absolute; top:0; bottom:0; width:46px;
+    display:flex; flex-direction:column; justify-content:space-evenly; align-items:center;
+    opacity:0.5;
+  }
+  .filmstrip.left{ left:10px; } .filmstrip.right{ right:10px; }
+  .sprocket{ width:11px; height:11px; border:1.3px solid var(--ink); border-radius:2px; }
+  .hero-inner{ padding:120px 0 90px; position:relative; display:grid; grid-template-columns:1.2fr 1fr; gap:50px; align-items:center; }
+  @media (max-width:900px){ .hero-inner{ grid-template-columns:1fr; } }
+  .hero-photo{ aspect-ratio:4/5; }
+  .hero-photo.empty::before{ content:"📷 Hero photo yahan daalein"; }
+  .eyebrow{
+    font-size:12.5px; text-transform:uppercase; letter-spacing:0.22em; color:var(--wine);
+    margin-bottom:22px; display:flex; align-items:center; gap:12px;
+  }
+  .eyebrow::before{ content:""; width:34px; height:1px; background:var(--wine); }
+  h1.hero-title{
+    font-size:clamp(40px, 7vw, 92px); font-weight:500; line-height:1.02; letter-spacing:-0.01em;
+    max-width:920px;
+  }
+  h1.hero-title em{ font-style:italic; font-weight:300; color:var(--brass); }
+  .hero-sub{
+    max-width:520px; margin-top:28px; font-size:17px; color:var(--grey); font-weight:300;
+  }
+  .hero-actions{ display:flex; gap:16px; margin-top:44px; flex-wrap:wrap; }
+  .btn{
+    padding:15px 28px; font-size:13.5px; text-transform:uppercase; letter-spacing:0.08em;
+    border-radius:var(--radius); border:1px solid var(--ink); display:inline-flex; align-items:center; gap:8px;
+    transition:transform .2s ease, background .2s ease, color .2s ease;
+  }
+  .btn-solid{ background:var(--ink); color:var(--paper); }
+  .btn-solid:hover{ transform:translateY(-2px); background:var(--wine); border-color:var(--wine); }
+  .btn-outline:hover{ transform:translateY(-2px); background:var(--ink); color:var(--paper); }
+  .hero-meta{
+    margin-top:90px; display:flex; gap:56px; flex-wrap:wrap;
+    border-top:1px solid var(--line); padding-top:26px;
+  }
+  .hero-meta div span{ display:block; }
+  .hero-meta .num{ font-family:'Fraunces',serif; font-size:30px; font-weight:500; }
+  .hero-meta .lbl{ font-size:12px; text-transform:uppercase; letter-spacing:0.08em; color:var(--grey); margin-top:4px; }
+
+  /* ---------- Section shell ---------- */
+  section{ padding:110px 0; position:relative; }
+  .chapter-head{ display:flex; align-items:baseline; gap:18px; margin-bottom:14px; }
+  .chapter-num{ font-size:13px; color:var(--brass); }
+  .chapter-head h2{ font-size:clamp(30px,4vw,48px); font-weight:500; }
+  .section-intro{ max-width:560px; color:var(--grey); font-weight:300; font-size:16px; margin-bottom:56px; }
+  .rule{ height:1px; background:var(--line); width:100%; margin:8px 0 50px; }
+
+  /* ---------- Philosophy ---------- */
+  .philosophy-grid{ display:grid; grid-template-columns:1.1fr 1fr; gap:64px; align-items:start; }
+  @media (max-width:820px){ .philosophy-grid{ grid-template-columns:1fr; gap:40px; } }
+  .philosophy-grid p{ font-weight:300; font-size:16.5px; margin-bottom:18px; color:#2a2520; }
+  .philosophy-grid p:first-child{ font-family:'Fraunces',serif; font-size:24px; font-weight:500; line-height:1.4; color:var(--ink); }
+  .credo-list{ display:flex; flex-direction:column; gap:0; }
+  .credo-item{ padding:20px 0; border-top:1px solid var(--line); display:flex; gap:18px; align-items:baseline; }
+  .credo-item:last-child{ border-bottom:1px solid var(--line); }
+  .credo-item .n{ font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--brass); }
+  .credo-item h4{ font-family:'Fraunces',serif; font-weight:500; font-size:17px; margin-bottom:4px; }
+  .credo-item p{ color:var(--grey); font-size:14px; font-weight:300; }
+
+  /* ---------- Services / Pricing ---------- */
+  .chapters{ display:flex; flex-direction:column; gap:2px; }
+  .chapter{
+    border:1px solid var(--line); background:rgba(255,255,255,0.25);
+    padding:38px; border-radius:var(--radius);
+    display:grid; grid-template-columns:1.3fr 1.7fr; gap:40px;
+  }
+  .chapter + .chapter{ margin-top:22px; }
+  @media (max-width:820px){ .chapter{ grid-template-columns:1fr; gap:26px; padding:28px; } }
+  .chapter-left .tag{ font-size:12px; color:var(--brass); margin-bottom:10px; display:block; }
+  .chapter-left h3{ font-family:'Fraunces',serif; font-size:29px; font-weight:500; margin-bottom:12px; }
+  .chapter-left p{ color:var(--grey); font-size:14.5px; font-weight:300; max-width:340px; }
+  .pkg-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+  @media (max-width:640px){ .pkg-grid{ grid-template-columns:1fr; } }
+  .pkg-grid-1{ grid-template-columns:1fr; max-width:320px; }
+  .pkg-grid-1 .price{ font-size:30px; }
+  .pkg{
+    border:1px solid var(--line); padding:20px 16px; border-radius:var(--radius);
+    display:flex; flex-direction:column; gap:8px; background:var(--paper);
+    transition:border-color .2s ease, transform .2s ease;
+  }
+  .pkg:hover{ border-color:var(--brass); transform:translateY(-3px); }
+  .pkg .pname{ font-size:12px; text-transform:uppercase; letter-spacing:0.06em; color:var(--grey); }
+  .pkg .price{ font-family:'IBM Plex Mono',monospace; font-size:22px; color:var(--ink); }
+  .pkg .price sup{ font-size:11px; color:var(--grey); }
+  .pkg ul{ list-style:none; font-size:12.8px; color:#3a342c; font-weight:300; line-height:1.65; margin-top:4px; }
+  .pkg ul li::before{ content:"— "; color:var(--brass); }
+  .note-price{ margin-top:34px; font-size:12.5px; color:var(--grey); font-style:italic; }
+
+  /* ---------- Gallery ---------- */
+  .gallery-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+  @media (max-width:820px){ .gallery-grid{ grid-template-columns:repeat(2,1fr); } }
+  .photo-slot{
+    aspect-ratio:3/4; border-radius:var(--radius); position:relative; overflow:hidden;
+    background:var(--paper-dim); border:1px solid var(--line);
+  }
+  .photo-slot img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .photo-slot.empty img{ display:none; }
+  .photo-slot.empty{
+    display:flex; align-items:center; justify-content:center; text-align:center; padding:14px;
+    background:linear-gradient(160deg, #fdf0f5, #fbdce9);
+  }
+  .photo-slot.empty::before{
+    content:"📷 Photo yahan daalein"; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--wine);
+    display:block; margin-bottom:6px;
+  }
+  .photo-slot.empty::after{
+    content:attr(data-file); font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--grey);
+    display:block; word-break:break-all;
+  }
+  .photo-slot.empty{ flex-direction:column; }
+
+  /* ---------- Testimonials ---------- */
+  .quote-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
+  @media (max-width:900px){ .quote-row{ grid-template-columns:1fr; } }
+  .quote{ border-top:1px solid var(--line); padding-top:22px; }
+  .quote p{ font-family:'Fraunces',serif; font-size:18px; font-weight:500; font-style:italic; line-height:1.5; margin-bottom:16px; }
+  .quote .who{ font-size:12.5px; color:var(--grey); text-transform:uppercase; letter-spacing:0.05em; }
+
+  /* ---------- FAQ ---------- */
+  .faq-item{ border-top:1px solid var(--line); }
+  .faq-item:last-child{ border-bottom:1px solid var(--line); }
+  .faq-q{
+    width:100%; text-align:left; background:none; border:none; cursor:pointer;
+    padding:22px 0; display:flex; justify-content:space-between; align-items:center;
+    font-family:'Fraunces',serif; font-size:18px; color:var(--ink);
+  }
+  .faq-q .plus{ font-family:'IBM Plex Mono',monospace; font-size:20px; color:var(--brass); transition:transform .25s ease; }
+  .faq-item.open .plus{ transform:rotate(45deg); }
+  .faq-a{ max-height:0; overflow:hidden; transition:max-height .3s ease; }
+  .faq-a p{ padding-bottom:22px; color:var(--grey); font-weight:300; font-size:14.5px; max-width:640px; }
+
+  /* ---------- Contact ---------- */
+  #contact{ background:var(--ink); color:var(--paper); border-radius:var(--radius); }
+  #contact .chapter-num, #contact .eyebrow{ color:var(--brass); }
+  #contact .section-intro{ color:rgba(255,255,255,0.65); }
+  .contact-grid{ display:grid; grid-template-columns:1fr 1fr; gap:60px; }
+  @media (max-width:820px){ .contact-grid{ grid-template-columns:1fr; gap:40px; } }
+  .contact-links{ display:flex; flex-direction:column; gap:0; }
+  .clink{
+    display:flex; justify-content:space-between; align-items:center; padding:22px 0;
+    border-top:1px solid var(--paper-line); font-size:15px;
+  }
+  .contact-links .clink:last-child{ border-bottom:1px solid var(--paper-line); }
+  .clink .l{ text-transform:uppercase; font-size:11.5px; letter-spacing:0.08em; color:rgba(255,255,255,0.55); }
+  .clink .v{ font-family:'Fraunces',serif; font-size:19px; }
+  .clink .arrow{ opacity:0.5; }
+  .clink:hover .arrow{ opacity:1; }
+  form#enquiry{ display:flex; flex-direction:column; gap:16px; }
+  form#enquiry input, form#enquiry select, form#enquiry textarea{
+    background:transparent; border:none; border-bottom:1px solid var(--paper-line);
+    color:var(--paper); font-family:'Work Sans',sans-serif; font-size:15px; padding:12px 2px;
+    outline:none;
+  }
+  form#enquiry select option{ color:#111; }
+  form#enquiry ::placeholder{ color:rgba(255,255,255,0.4); }
+  form#enquiry label{ font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:rgba(255,255,255,0.5); margin-bottom:-8px; }
+  form#enquiry button{
+    margin-top:14px; background:var(--brass); color:var(--ink); border:none; padding:16px;
+    font-size:13.5px; text-transform:uppercase; letter-spacing:0.08em; border-radius:var(--radius);
+    cursor:pointer; transition:opacity .2s ease;
+  }
+  form#enquiry button:hover{ opacity:0.85; }
+  #form-status{ font-size:13px; color:var(--brass); min-height:18px; }
+
+  /* ---------- Footer ---------- */
+  footer{ padding:40px 0; }
+  .foot-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px; }
+  .foot-row p{ font-size:12.5px; color:var(--grey); }
+
+  /* ---------- Scroll reveal ---------- */
+  .reveal{ opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  /* ---------- Floating WhatsApp ---------- */
+  #wa-float{
+    position:fixed; bottom:26px; right:26px; z-index:950;
+    background:var(--ink); color:var(--paper); width:56px; height:56px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; box-shadow:0 8px 20px rgba(0,0,0,0.25);
+    border:1px solid var(--brass);
+  }
+  #wa-float:hover{ background:var(--wine); }
+
+  /* ---------- Mobile centering fixes ---------- */
+  @media (max-width:640px){
+    .filmstrip{ display:none; }
+    .hero-inner{ text-align:center; }
+    .eyebrow{ justify-content:center; }
+    .eyebrow::before{ display:none; }
+    h1.hero-title{ margin:0 auto; }
+    .hero-sub{ margin-left:auto; margin-right:auto; }
+    .hero-actions{ justify-content:center; }
+    .hero-meta{ justify-content:center; text-align:center; }
+    .chapter-head{ flex-direction:column; align-items:center; text-align:center; gap:6px; }
+    .section-intro{ margin-left:auto; margin-right:auto; text-align:center; }
+    .philosophy-grid p:first-child{ text-align:center; }
+    .philosophy-grid p{ text-align:center; }
+    .credo-item{ flex-direction:column; text-align:center; gap:6px; }
+    .chapter{ text-align:center; }
+    .chapter-left p{ margin-left:auto; margin-right:auto; }
+    .pkg-grid-1{ margin:0 auto; }
+    .quote{ text-align:center; }
+    .faq-q{ text-align:center; justify-content:center; position:relative; }
+    .faq-q .plus{ position:absolute; right:0; }
+    .foot-row{ justify-content:center; text-align:center; flex-direction:column; }
+  }
+</style>
+</head>
+<body>
+
+<div id="frame-rail"></div>
+
+<header>
+  <nav class="wrap">
+    <a href="#top" class="brand">
+      <span class="mark">ST</span>
+      <span class="name">Story Teller <span>Photography</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="#services">Chapters</a>
+      <a href="#gallery">Frames</a>
+      <a href="#testimonials">Stories Told</a>
+      <a href="#faq">FAQ</a>
+      <span class="frame-count mono" id="frame-count">FRAME 01/07</span>
+      <a href="https://www.instagram.com/story.teller.photography/" target="_blank" rel="noopener" class="social-icon" aria-label="Instagram">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="6" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.6"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor"/></svg>
+      </a>
+      <a href="https://api.whatsapp.com/send?phone=919654718718&amp;text=Hi%20Story%20Teller%20Photography%2C%20I%27d%20like%20to%20enquire%20about%20a%20shoot." target="_blank" rel="noopener" class="social-icon" aria-label="WhatsApp">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M17.6 6.32A7.85 7.85 0 0 0 12.04 4C7.6 4 4 7.58 4 12c0 1.4.37 2.77 1.07 3.98L4 20l4.13-1.08A8.03 8.03 0 0 0 12.04 20c4.44 0 8.04-3.58 8.04-8 0-2.14-.84-4.15-2.48-5.68ZM12.04 18.5a6.5 6.5 0 0 1-3.32-.91l-.24-.14-2.45.64.66-2.4-.16-.25A6.47 6.47 0 0 1 5.5 12c0-3.6 2.94-6.5 6.54-6.5 1.75 0 3.39.68 4.62 1.92a6.42 6.42 0 0 1 1.92 4.58c0 3.6-2.94 6.5-6.54 6.5Z" fill="currentColor"/></svg>
+      </a>
+      <a href="#contact" class="nav-cta">Enquire</a>
+    </div>
+    <button class="burger" id="burger" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </nav>
+</header>
+
+<div id="mobile-menu">
+  <a href="#services">Chapters</a>
+  <a href="#gallery">Frames</a>
+  <a href="#testimonials">Stories Told</a>
+  <a href="#faq">FAQ</a>
+  <div style="display:flex; gap:22px; margin-top:6px;">
+    <a href="https://www.instagram.com/story.teller.photography/" target="_blank" rel="noopener" class="social-icon" aria-label="Instagram" style="font-size:26px;">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="6" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.6"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor"/></svg>
+    </a>
+    <a href="https://api.whatsapp.com/send?phone=919654718718&amp;text=Hi%20Story%20Teller%20Photography" target="_blank" rel="noopener" class="social-icon" aria-label="WhatsApp">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M17.6 6.32A7.85 7.85 0 0 0 12.04 4C7.6 4 4 7.58 4 12c0 1.4.37 2.77 1.07 3.98L4 20l4.13-1.08A8.03 8.03 0 0 0 12.04 20c4.44 0 8.04-3.58 8.04-8 0-2.14-.84-4.15-2.48-5.68ZM12.04 18.5a6.5 6.5 0 0 1-3.32-.91l-.24-.14-2.45.64.66-2.4-.16-.25A6.47 6.47 0 0 1 5.5 12c0-3.6 2.94-6.5 6.54-6.5 1.75 0 3.39.68 4.62 1.92a6.42 6.42 0 0 1 1.92 4.58c0 3.6-2.94 6.5-6.54 6.5Z" fill="currentColor"/></svg>
+    </a>
+  </div>
+  <a href="#contact">Enquire</a>
+</div>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero" style="padding-bottom:0;">
+    <div class="filmstrip left" aria-hidden="true"></div>
+    <div class="filmstrip right" aria-hidden="true"></div>
+    <div class="wrap hero-inner">
+      <div class="hero-text">
+        <p class="eyebrow">Story Teller Photography — Delhi NCR &amp; Destination</p>
+        <h1 class="hero-title">Every love has a story <em>worth telling.</em></h1>
+        <p class="hero-sub">We don't just take pictures — we follow a story as it happens: the nervous laugh before the vows, the first dance, the birthday candle blown out. Pre-wedding, wedding, birthday, anniversary — every occasion, told frame by frame.</p>
+        <div class="hero-actions">
+          <a href="#contact" class="btn btn-solid">Book Your Story →</a>
+          <a href="https://api.whatsapp.com/send?phone=919654718718&amp;text=Hi%20Story%20Teller%20Photography%2C%20I%27d%20like%20to%20enquire%20about%20a%20shoot." target="_blank" rel="noopener" class="btn btn-outline">WhatsApp Us</a>
+        </div>
+        <div class="hero-meta">
+          <div><span class="num">250+</span><span class="lbl">Stories Told</span></div>
+          <div><span class="num">6</span><span class="lbl">Years Behind the Lens</span></div>
+          <div><span class="num">4</span><span class="lbl">Shoot Types</span></div>
+          <div><span class="num">24h</span><span class="lbl">Avg. Reply Time</span></div>
+        </div>
+      </div>
+      <div class="hero-photo photo-slot" data-file="images/hero.jpg">
+        <img src="images/hero.jpg" alt="Story Teller Photography" onerror="this.parentElement.classList.add('empty')">
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT US -->
+  <section id="philosophy">
+    <div class="wrap">
+      <div class="chapter-head"><span class="chapter-num mono">CH. 01</span><h2>About Us</h2></div>
+      <div class="rule"></div>
+      <div class="philosophy-grid reveal">
+        <div>
+          <p>Welcome to Story Teller Photography, where your moments turn into memories that last a lifetime.</p>
+          <p>We started this studio with one simple belief: the best photographs are the ones that feel real. Whether it's the quiet nervousness before a pre-wedding shoot, the joy of a wedding day, a child's birthday laughter, or the warmth of an anniversary — we are there to capture it exactly as it happens.</p>
+          <p>Our team blends candid storytelling with a creative eye, using the latest photo and video equipment to deliver a gallery that feels like your story, not a template. From Delhi NCR to destination shoots across India, we travel wherever your story takes us.</p>
+        </div>
+        <div class="credo-list">
+          <div class="photo-slot" data-file="images/about.jpg" style="aspect-ratio:16/10; margin-bottom:24px;">
+            <img src="images/about.jpg" alt="Story Teller Photography team" onerror="this.parentElement.classList.add('empty')">
+          </div>
+          <div class="credo-item"><span class="n mono">01</span><div><h4>Candid-first</h4><p>We shoot as it happens, not as it's staged.</p></div></div>
+          <div class="credo-item"><span class="n mono">02</span><div><h4>Photo + Video, always together</h4><p>Every shoot comes with both, so nothing is missed.</p></div></div>
+          <div class="credo-item"><span class="n mono">03</span><div><h4>Fast, honest delivery</h4><p>Edited gallery within the timeline we promise — no chasing.</p></div></div>
+          <div class="credo-item"><span class="n mono">04</span><div><h4>Every budget, real value</h4><p>Transparent packages, no hidden add-ons at delivery.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES / PRICING -->
+  <section id="services">
+    <div class="wrap">
+      <div class="chapter-head"><span class="chapter-num mono">CH. 02</span><h2>Chapters We Shoot</h2></div>
+      <p class="section-intro reveal">Four core chapters, and everything in between — maternity, baby shoots, corporate events, fashion portfolios. Prices below are starting packages; every quote is customised on a call.</p>
+
+      <div class="chapters">
+
+        <div class="chapter reveal chapter-single">
+          <div class="chapter-left">
+            <span class="tag mono">CHAPTER I</span>
+            <h3>Pre-Wedding Shoot</h3>
+            <p>A story that's just about the two of you — before the chaos of the big day begins. Photo &amp; video, both included.</p>
+          </div>
+          <div class="pkg-grid pkg-grid-1">
+            <div class="pkg">
+              <span class="pname">Pre-Wedding Package</span>
+              <span class="price">₹40,000</span>
+              <ul><li>Photo + Video coverage</li><li>Multiple locations</li><li>Edited photos + cinematic film</li></ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter reveal chapter-single">
+          <div class="chapter-left">
+            <span class="tag mono">CHAPTER II</span>
+            <h3>Wedding Shoot</h3>
+            <p>From haldi to reception — every ritual, every reaction, documented as it happens. Photo &amp; video, both included.</p>
+          </div>
+          <div class="pkg-grid pkg-grid-1">
+            <div class="pkg">
+              <span class="pname">Wedding Package</span>
+              <span class="price">₹60,000</span>
+              <ul><li>Photo + Video coverage</li><li>Candid + traditional</li><li>Edited gallery + highlight film</li></ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter reveal chapter-single">
+          <div class="chapter-left">
+            <span class="tag mono">CHAPTER III</span>
+            <h3>Birthday Shoot</h3>
+            <p>From first birthdays to milestone parties — candles, cake, and everyone's real smiles. Photo &amp; video, both included.</p>
+          </div>
+          <div class="pkg-grid pkg-grid-1">
+            <div class="pkg">
+              <span class="pname">Birthday Package</span>
+              <span class="price">₹25,000</span>
+              <ul><li>Photo + Video coverage</li><li>Full event</li><li>Edited photos + reel</li></ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter reveal chapter-single">
+          <div class="chapter-left">
+            <span class="tag mono">CHAPTER IV</span>
+            <h3>Anniversary Shoot</h3>
+            <p>Celebrating years together — at home, at your favourite spot, or a full-blown party. Photo &amp; video, both included.</p>
+          </div>
+          <div class="pkg-grid pkg-grid-1">
+            <div class="pkg">
+              <span class="pname">Anniversary Package</span>
+              <span class="price">₹25,000</span>
+              <ul><li>Photo + Video coverage</li><li>Full event</li><li>Edited photos + reel</li></ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter reveal">
+          <div class="chapter-left">
+            <span class="tag mono">EPILOGUE</span>
+            <h3>Every Other Story</h3>
+            <p>Maternity, baby shoots, corporate events, fashion, product — if it needs a camera, we shoot it.</p>
+          </div>
+          <div class="pkg-grid">
+            <div class="pkg">
+              <span class="pname">Maternity / Baby</span>
+              <span class="price">₹25,000</span>
+              <ul><li>Photo + Video coverage</li><li>Studio or home</li></ul>
+            </div>
+            <div class="pkg">
+              <span class="pname">Corporate / Event</span>
+              <span class="price">₹25,000</span>
+              <ul><li>Photo + Video coverage</li><li>Fast turnaround delivery</li></ul>
+            </div>
+            <div class="pkg">
+              <span class="pname">Custom Shoot</span>
+              <span class="price">On Request</span>
+              <ul><li>Fashion, product, portfolio</li><li>Quote based on brief</li></ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <p class="note-price reveal">* All prices are starting rates and can vary with location, travel, team size and season. Final quote shared after a quick call — no surprise charges at delivery.</p>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery">
+    <div class="wrap">
+      <div class="chapter-head"><span class="chapter-num mono">CH. 03</span><h2>Frames From Our Stories</h2></div>
+      <p class="section-intro reveal">Replace these placeholder frames with your real portfolio photos — instructions are in the guide below.</p>
+      <div class="gallery-grid reveal">
+        <div class="photo-slot" data-file="images/gallery-1.jpg"><img src="images/gallery-1.jpg" alt="Pre-wedding shoot" onerror="this.parentElement.classList.add('empty')"></div>
+        <div class="photo-slot" data-file="images/gallery-2.jpg"><img src="images/gallery-2.jpg" alt="Wedding shoot" onerror="this.parentElement.classList.add('empty')"></div>
+        <div class="photo-slot" data-file="images/gallery-3.jpg"><img src="images/gallery-3.jpg" alt="Birthday shoot" onerror="this.parentElement.classList.add('empty')"></div>
+        <div class="photo-slot" data-file="images/gallery-4.jpg"><img src="images/gallery-4.jpg" alt="Anniversary shoot" onerror="this.parentElement.classList.add('empty')"></div>
+        <div class="photo-slot" data-file="images/gallery-5.jpg"><img src="images/gallery-5.jpg" alt="Wedding shoot" onerror="this.parentElement.classList.add('empty')"></div>
+        <div class="photo-slot" data-file="images/gallery-6.jpg"><img src="images/gallery-6.jpg" alt="Pre-wedding shoot" onerror="this.parentElement.classList.add('empty')"></div>
+        <div class="photo-slot" data-file="images/gallery-7.jpg"><img src="images/gallery-7.jpg" alt="Candid moment" onerror="this.parentElement.classList.add('empty')"></div>
+        <div class="photo-slot" data-file="images/gallery-8.jpg"><img src="images/gallery-8.jpg" alt="Wedding shoot" onerror="this.parentElement.classList.add('empty')"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="testimonials">
+    <div class="wrap">
+      <div class="chapter-head"><span class="chapter-num mono">CH. 04</span><h2>Stories Our Clients Tell</h2></div>
+      <div class="rule"></div>
+      <div class="quote-row reveal">
+        <div class="quote">
+          <p>"They caught moments we didn't even know were happening. Our wedding album feels like watching the day again."</p>
+          <p class="who">— Priya &amp; Arjun, Wedding</p>
+        </div>
+        <div class="quote">
+          <p>"Super comfortable pre-wedding shoot, no awkward posing. The photos looked like us, not like a catalogue."</p>
+          <p class="who">— Neha &amp; Rohit, Pre-Wedding</p>
+        </div>
+        <div class="quote">
+          <p>"Booked them for my daughter's first birthday — patient with the kids, and the gallery came in 3 days flat."</p>
+          <p class="who">— Sanjay Mehta, Birthday Shoot</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="wrap">
+      <div class="chapter-head"><span class="chapter-num mono">CH. 05</span><h2>Before You Ask</h2></div>
+      <div class="rule"></div>
+      <div class="reveal">
+        <div class="faq-item">
+          <button class="faq-q"><span>How do I book a shoot?</span><span class="plus">+</span></button>
+          <div class="faq-a"><p>Message us on WhatsApp or fill the enquiry form below with your date, city and shoot type. We'll confirm availability and share the exact package within a day.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span>How long until we get our photos?</span><span class="plus">+</span></button>
+          <div class="faq-a"><p>Birthday/anniversary shoots: 3–5 days. Pre-wedding: 7–10 days. Full weddings: 3–4 weeks for the complete edited gallery, with a sneak-peek shared within 48 hours.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span>Do you travel outside Delhi NCR?</span><span class="plus">+</span></button>
+          <div class="faq-a"><p>Yes — we shoot destination weddings and pre-wedding shoots pan-India. Travel and stay are added to the quote separately.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span>Is an advance required to confirm the date?</span><span class="plus">+</span></button>
+          <div class="faq-a"><p>Yes, a booking advance is required to block your date, with the balance due on or before the shoot day. Exact terms are shared in the quote.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="wrap" style="padding:90px 32px;">
+      <div class="chapter-head"><span class="chapter-num mono">CH. 06</span><h2>Let's Write Your Chapter</h2></div>
+      <p class="section-intro reveal">Tell us your date and story — we'll reply within a day with availability and a custom quote.</p>
+      <div class="contact-grid reveal">
+        <div class="contact-links">
+          <a class="clink" href="https://api.whatsapp.com/send?phone=919654718718&amp;text=Hi%20Story%20Teller%20Photography%2C%20I%27d%20like%20to%20enquire%20about%20a%20shoot." target="_blank" rel="noopener">
+            <span><span class="l">WhatsApp</span><br><span class="v">+91 96547 18718</span></span><span class="arrow">↗</span>
+          </a>
+          <a class="clink" href="tel:+919654718718">
+            <span><span class="l">Call</span><br><span class="v">+91 96547 18718</span></span><span class="arrow">↗</span>
+          </a>
+          <a class="clink" href="mailto:storytellerphotography680@gmail.com">
+            <span><span class="l">Email</span><br><span class="v">storytellerphotography680@gmail.com</span></span><span class="arrow">↗</span>
+          </a>
+          <a class="clink" href="https://www.instagram.com/story.teller.photography/" target="_blank" rel="noopener">
+            <span><span class="l">Instagram</span><br><span class="v">@story.teller.photography</span></span><span class="arrow">↗</span>
+          </a>
+        </div>
+        <form id="enquiry">
+          <label for="f-name">Name</label>
+          <input id="f-name" type="text" placeholder="Your name" required>
+          <label for="f-phone">Phone</label>
+          <input id="f-phone" type="tel" placeholder="10-digit mobile number" required>
+          <label for="f-type">Shoot Type</label>
+          <select id="f-type">
+            <option>Pre-Wedding</option>
+            <option>Wedding</option>
+            <option>Birthday</option>
+            <option>Anniversary</option>
+            <option>Other</option>
+          </select>
+          <label for="f-date">Preferred Date</label>
+          <input id="f-date" type="date">
+          <label for="f-msg">Message</label>
+          <textarea id="f-msg" rows="3" placeholder="Tell us about your story..."></textarea>
+          <button type="submit">Send Enquiry via WhatsApp</button>
+          <p id="form-status"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<a id="wa-float" href="https://api.whatsapp.com/send?phone=919654718718&amp;text=Hi%20Story%20Teller%20Photography%2C%20I%27d%20like%20to%20enquire%20about%20a%20shoot." target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.6 6.32A7.85 7.85 0 0 0 12.04 4C7.6 4 4 7.58 4 12c0 1.4.37 2.77 1.07 3.98L4 20l4.13-1.08A8.03 8.03 0 0 0 12.04 20c4.44 0 8.04-3.58 8.04-8 0-2.14-.84-4.15-2.48-5.68ZM12.04 18.5a6.5 6.5 0 0 1-3.32-.91l-.24-.14-2.45.64.66-2.4-.16-.25A6.47 6.47 0 0 1 5.5 12c0-3.6 2.94-6.5 6.54-6.5 1.75 0 3.39.68 4.62 1.92a6.42 6.42 0 0 1 1.92 4.58c0 3.6-2.94 6.5-6.54 6.5Zm3.58-4.87c-.2-.1-1.16-.57-1.34-.64-.18-.06-.3-.1-.44.1-.13.19-.5.64-.62.77-.11.13-.22.14-.42.05-.2-.1-.83-.3-1.58-.97-.58-.52-.98-1.16-1.09-1.36-.11-.19-.01-.3.09-.4.09-.1.2-.24.3-.36.1-.13.13-.22.2-.36.06-.14.03-.26-.02-.36-.05-.1-.44-1.06-.6-1.45-.16-.38-.32-.33-.44-.34h-.38c-.13 0-.35.05-.53.24-.18.19-.7.68-.7 1.65 0 .97.71 1.9.81 2.03.1.13 1.4 2.13 3.38 2.99.47.2.84.32 1.13.42.47.15.9.13 1.24.08.38-.06 1.16-.47 1.32-.93.16-.45.16-.85.11-.93-.05-.09-.18-.14-.38-.24Z" fill="#F3EAD8"/></svg>
+</a>
+
+<footer>
+  <div class="wrap foot-row">
+    <p>© <span id="year"></span> Story Teller Photography. All rights reserved.</p>
+    <div style="display:flex; gap:18px;">
+      <a href="https://www.instagram.com/story.teller.photography/" target="_blank" rel="noopener" class="social-icon" aria-label="Instagram">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="6" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.6"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor"/></svg>
+      </a>
+      <a href="https://api.whatsapp.com/send?phone=919654718718&amp;text=Hi%20Story%20Teller%20Photography" target="_blank" rel="noopener" class="social-icon" aria-label="WhatsApp">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M17.6 6.32A7.85 7.85 0 0 0 12.04 4C7.6 4 4 7.58 4 12c0 1.4.37 2.77 1.07 3.98L4 20l4.13-1.08A8.03 8.03 0 0 0 12.04 20c4.44 0 8.04-3.58 8.04-8 0-2.14-.84-4.15-2.48-5.68ZM12.04 18.5a6.5 6.5 0 0 1-3.32-.91l-.24-.14-2.45.64.66-2.4-.16-.25A6.47 6.47 0 0 1 5.5 12c0-3.6 2.94-6.5 6.54-6.5 1.75 0 3.39.68 4.62 1.92a6.42 6.42 0 0 1 1.92 4.58c0 3.6-2.94 6.5-6.54 6.5Z" fill="currentColor"/></svg>
+      </a>
+    </div>
+    <p>Made with care, one frame at a time.</p>
+  </div>
+</footer>
+
+<script>
+  // Year
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Mobile menu
+  const burger = document.getElementById('burger');
+  const menu = document.getElementById('mobile-menu');
+  burger.addEventListener('click', () => menu.classList.toggle('open'));
+  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => menu.classList.remove('open')));
+
+  // Scroll progress rail + frame counter
+  const sections = ['top','philosophy','services','gallery','testimonials','faq','contact'];
+  const rail = document.getElementById('frame-rail');
+  const frameCount = document.getElementById('frame-count');
+  function onScroll(){
+    const doc = document.documentElement;
+    const scrolled = (doc.scrollTop) / (doc.scrollHeight - doc.clientHeight) * 100;
+    rail.style.width = scrolled + '%';
+
+    let current = 0;
+    sections.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if(el && el.getBoundingClientRect().top < window.innerHeight * 0.5) current = i;
+    });
+    frameCount.textContent = 'FRAME 0' + (current+1) + '/0' + sections.length;
+  }
+  document.addEventListener('scroll', onScroll);
+  onScroll();
+
+  // Reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-item').forEach(item => {
+    const q = item.querySelector('.faq-q');
+    const a = item.querySelector('.faq-a');
+    q.addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(other => {
+        other.classList.remove('open');
+        other.querySelector('.faq-a').style.maxHeight = null;
+      });
+      if(!isOpen){
+        item.classList.add('open');
+        a.style.maxHeight = a.scrollHeight + 'px';
+      }
+    });
+  });
+
+  // Enquiry form -> WhatsApp
+  document.getElementById('enquiry').addEventListener('submit', function(e){
+    e.preventDefault();
+    const name = document.getElementById('f-name').value.trim();
+    const phone = document.getElementById('f-phone').value.trim();
+    const type = document.getElementById('f-type').value;
+    const date = document.getElementById('f-date').value;
+    const msg = document.getElementById('f-msg').value.trim();
+    const status = document.getElementById('form-status');
+
+    if(!name || !phone){
+      status.textContent = 'Please fill your name and phone number.';
+      return;
+    }
+    const text = `Hi Story Teller Photography, I'd like to enquire about a shoot.%0A%0AName: ${encodeURIComponent(name)}%0APhone: ${encodeURIComponent(phone)}%0AShoot Type: ${encodeURIComponent(type)}%0APreferred Date: ${encodeURIComponent(date || 'Not decided')}%0AMessage: ${encodeURIComponent(msg || '-')}`;
+    status.textContent = 'Opening WhatsApp...';
+    window.open(`https://api.whatsapp.com/send?phone=919654718718&text=${text}`, '_blank');
+  });
+</script>
+
+</body>
+</html>
